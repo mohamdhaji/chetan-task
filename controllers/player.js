@@ -42,7 +42,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   const name = req.body.name;
   const contactNumber = req.body.contactNumber;
-  Player.findOne({ name: name,contactNumber:contactNumber })
+  Player.findOne({ name: name, contactNumber: contactNumber })
     .then((player) => {
       if (!player) {
         const error = new Error("name or contact number is not correct");
@@ -51,19 +51,17 @@ exports.login = (req, res, next) => {
       }
       var options = {
         method: "GET",
-        url:
-          "http://otpsms.vision360solutions.in/api/sendhttp.php?authkey=351966AFCfBrCfr3SG60028af2P1&mobiles=8003621369&message=your otp is 1234&sender=Vision&route=4&country=91",
+        url: process.env.OTPSMS_URL,
         headers: {
-          Cookie:
-            "__cfduid=dd52708ff7620ed9102f78698d84004d91615891425; PHPSESSID=suoravokkkcaqm3hv476bt00f0",
+          Cookie: process.env.OTPSMS_COOKIE,
         },
       };
       request(options, async function (error, response) {
         if (error) throw new Error(error);
         player.otp = response.body.slice(0, 4);
         await player.save();
-        res.status(200).json({ otp: response.body.slice(0, 4)});
-      })
+        res.status(200).json({ otp: response.body.slice(0, 4) });
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {

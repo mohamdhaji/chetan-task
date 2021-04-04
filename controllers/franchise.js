@@ -46,19 +46,15 @@ exports.login = (req, res, next) => {
   Franchise.findOne({ email: email, contactNumber: contactNumber })
     .then((franchise) => {
       if (!franchise) {
-        const error = new Error(
-          "email or contact number is not correct"
-        );
+        const error = new Error("email or contact number is not correct");
         error.statusCode = 401;
         throw error;
       }
       var options = {
         method: "GET",
-        url:
-          "http://otpsms.vision360solutions.in/api/sendhttp.php?authkey=351966AFCfBrCfr3SG60028af2P1&mobiles=8003621369&message=your otp is 1234&sender=Vision&route=4&country=91",
+        url: process.env.OTPSMS_URL,
         headers: {
-          Cookie:
-            "__cfduid=dd52708ff7620ed9102f78698d84004d91615891425; PHPSESSID=suoravokkkcaqm3hv476bt00f0",
+          Cookie: process.env.OTPSMS_COOKIE,
         },
       };
       request(options, async function (error, response) {

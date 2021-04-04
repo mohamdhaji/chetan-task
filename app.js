@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const playerRoutes = require("./routes/player");
 const franchiseRoutes = require("./routes/franchise");
 
+require("dotenv").config();
+
 const app = express();
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json()); // application/json
@@ -36,7 +38,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://mohamdhaji:mohamdhaji123@cluster0.wddes.mongodb.net/testing?retryWrites=true&w=majority"
+    process.env.MONGODB_URI
   )
   .then((result) => {
     app.listen(8080);

@@ -17,14 +17,12 @@ exports.signup = (req, res, next) => {
   const location = req.body.location;
   const contactNumber = req.body.contactNumber;
   const playerStatus = {
-    level: "",
-    overPlayed: "",
-    runsChase: "",
+    overPlayed: null,
+    runsChase: null,
     difficulty: "",
-    score: "",
-    matchesPlayed: "",
-    strikeRate: "",
-    runRate: "",
+    score: null,
+    strikeRate: null,
+    runRate: null,
   };
 
   const player = new Player({
@@ -65,9 +63,12 @@ exports.login = (req, res, next) => {
           Cookie: process.env.OTPSMS_COOKIE,
         },
       };
-      request(options, (error, response) => {
+      request(options, async (error, response) => {
         if (error) throw new Error(error);
-
+        player.Active = true;
+        player.playerStatus.MatchesPlayed =
+          player.playerStatus.MatchesPlayed + 1;
+        await player.save();
         res.status(200).json({ otp: response.body.slice(-5), player: player });
       });
     })

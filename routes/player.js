@@ -31,7 +31,14 @@ router.post(
       .trim()
       .not()
       .isEmpty()
-      .withMessage("Please enter your contact number"),
+      .withMessage("Please enter your contact number")
+      .custom((value, { req }) => {
+        return Player.findOne({ contactNumber: value }).then((userDoc) => {
+          if (userDoc) {
+            return Promise.reject("contact number already exists!");
+          }
+        });
+      }),
   ],
   playerController.signup
 );

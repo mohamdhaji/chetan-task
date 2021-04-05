@@ -17,6 +17,7 @@ const franchiseSchema = new Schema({
   contactNumber: {
     type: Number,
     required: true,
+    unique: 1,
   },
   macAddress: {
     type: String,

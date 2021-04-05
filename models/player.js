@@ -20,10 +20,39 @@ const playerSchema = new Schema({
   contactNumber: {
     type: Number,
     required: true,
+    unique: 1,
   },
- 
   playerStatus: {
-    type: Object,
+    level: {
+      type: Number,
+      default: 1,
+    },
+    MatchesPlayed: {
+      type: Number,
+      default: 0,
+    },
+    overPlayed: {
+      type: Boolean,
+    },
+    runsChase: {
+      type: Boolean,
+    },
+    Difficulty: {
+      type: String,
+    },
+    Score: {
+      type: Number,
+    },
+    strikeRate: {
+      type: Number,
+    },
+    runRate: {
+      type: Number,
+    },
+  },
+  Active: {
+    type: Boolean,
+    default: false,
   },
 });
 

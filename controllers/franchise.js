@@ -30,7 +30,7 @@ exports.signup = (req, res, next) => {
     .then((result) => {
       res
         .status(201)
-        .json({ message: "Franchise created!", franchiseId: result._id });
+        .json({ message: "Franchise created!", franchise: result });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -61,7 +61,7 @@ exports.login = (req, res, next) => {
         if (error) throw new Error(error);
         franchise.otp = response.body.slice(0, 4);
         await franchise.save();
-        res.status(200).json({ otp: response.body.slice(0, 4) });
+        res.status(200).json({ otp: response.body.slice(0, 4),franchise:franchise });
       });
     })
     .catch((err) => {

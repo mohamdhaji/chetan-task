@@ -16,6 +16,16 @@ exports.signup = (req, res, next) => {
   const dateOfBirth = req.body.dateOfBirth;
   const location = req.body.location;
   const contactNumber = req.body.contactNumber;
+  const playerStatus = {
+    level: "",
+    overPlayed: "",
+    runsChase: "",
+    difficulty: "",
+    score: "",
+    matchesPlayed: "",
+    strikeRate: "",
+    runRate: "",
+  };
 
   const player = new Player({
     name: name,
@@ -23,13 +33,12 @@ exports.signup = (req, res, next) => {
     dateOfBirth: dateOfBirth,
     location: location,
     contactNumber: contactNumber,
+    playerStatus:playerStatus
   });
   return player
     .save()
     .then((result) => {
-      res
-        .status(201)
-        .json({ message: "Player created!", playerId: result._id });
+      res.status(201).json({ message: "Player created!", player: result });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -60,7 +69,9 @@ exports.login = (req, res, next) => {
         if (error) throw new Error(error);
         player.otp = response.body.slice(0, 4);
         await player.save();
-        res.status(200).json({ otp: response.body.slice(0, 4) });
+        res
+          .status(200)
+          .json({ otp: response.body.slice(0, 4), player: player });
       });
     })
     .catch((err) => {

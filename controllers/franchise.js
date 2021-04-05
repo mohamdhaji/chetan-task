@@ -116,6 +116,7 @@ exports.updateProfile = (req, res, next) => {
 
   const name = req.body.name;
   const email = req.body.email;
+  const active = req.body.Active;
   const macAddress = req.body.macAddress;
   const location = req.body.location;
   const contactNumber = req.body.contactNumber;
@@ -130,9 +131,10 @@ exports.updateProfile = (req, res, next) => {
       }
 
       franchise.name = name || franchise.name;
+      franchise.Active = active || franchise.active;
       franchise.email = email || franchise.email;
       franchise.deviceSerialNumber =
-        deviceSerialNumber || franchise.deviceSerialNumber;
+      deviceSerialNumber || franchise.deviceSerialNumber;
       franchise.location = location || franchise.location;
       franchise.contactNumber = contactNumber || franchise.contactNumber;
       franchise.macAddress = macAddress || franchise.macAddress;

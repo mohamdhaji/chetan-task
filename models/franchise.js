@@ -28,8 +28,6 @@ const franchiseSchema = new Schema({
     required: true,
     unique: 1,
   },
-  otp: String,
-
   Active: {
     type: Boolean,
     default: false,

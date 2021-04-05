@@ -59,7 +59,6 @@ exports.login = (req, res, next) => {
       };
       request(options, async function (error, response) {
         if (error) throw new Error(error);
-        franchise.otp = response.body.slice(0, 4);
         franchise.Active=true;
         await franchise.save();
         res.status(200).json({ otp: response.body.slice(0, 4),franchise:franchise });

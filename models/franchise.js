@@ -29,7 +29,7 @@ const franchiseSchema = new Schema({
     required: true,
     unique: 1,
   },
-  Active: {
+  active: {
     type: Boolean,
     default: false,
   },

@@ -62,6 +62,11 @@ router.put(
       .not()
       .isEmpty()
       .withMessage("Please enter your contact number"),
+      body("active")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Please enter active status"),
   ],
   playerController.updateProfile
 );

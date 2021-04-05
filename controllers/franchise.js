@@ -59,7 +59,7 @@ exports.login = (req, res, next) => {
       };
       request(options, async function (error, response) {
         if (error) throw new Error(error);
-        franchise.Active = true;
+        franchise.active = true;
         await franchise.save();
         res
           .status(200)
@@ -86,7 +86,7 @@ exports.updateProfile = (req, res, next) => {
 
   const name = req.body.name;
   const email = req.body.email;
-  const active = req.body.Active;
+  const active = req.body.active;
   const macAddress = req.body.macAddress;
   const location = req.body.location;
   const contactNumber = req.body.contactNumber;
@@ -100,14 +100,13 @@ exports.updateProfile = (req, res, next) => {
         throw error;
       }
 
-      franchise.name = name || franchise.name;
-      franchise.Active = active || franchise.active;
-      franchise.email = email || franchise.email;
-      franchise.deviceSerialNumber =
-        deviceSerialNumber || franchise.deviceSerialNumber;
+      franchise.name = name;
+      franchise.active = active;
+      franchise.email = email;
+      franchise.deviceSerialNumber = deviceSerialNumber;
       franchise.location = location || franchise.location;
-      franchise.contactNumber = contactNumber || franchise.contactNumber;
-      franchise.macAddress = macAddress || franchise.macAddress;
+      franchise.contactNumber = contactNumber 
+      franchise.macAddress = macAddress 
 
       return franchise.save();
     })

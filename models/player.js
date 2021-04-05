@@ -50,7 +50,7 @@ const playerSchema = new Schema({
       type: Number,
     },
   },
-  Active: {
+  active: {
     type: Boolean,
     default: false,
   },

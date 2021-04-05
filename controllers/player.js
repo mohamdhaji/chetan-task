@@ -65,7 +65,7 @@ exports.login = (req, res, next) => {
       };
       request(options, async (error, response) => {
         if (error) throw new Error(error);
-        player.Active = true;
+        player.active = true;
         player.playerStatus.MatchesPlayed =
           player.playerStatus.MatchesPlayed + 1;
         await player.save();
@@ -93,6 +93,7 @@ exports.updateProfile = (req, res, next) => {
 
   const name = req.body.name;
   const email = req.body.email;
+  const active = req.body.active;
   const dateOfBirth = req.body.dateOfBirth;
   const location = req.body.location;
   const contactNumber = req.body.contactNumber;
@@ -106,11 +107,12 @@ exports.updateProfile = (req, res, next) => {
         throw error;
       }
 
-      player.name = name || player.name;
-      player.email = email || player.email;
-      player.dateOfBirth = dateOfBirth || player.dateOfBirth;
+      player.name = name ;
+      player.active = active
+      player.email = email ;
+      player.dateOfBirth = dateOfBirth;
       player.location = location || player.location;
-      player.contactNumber = contactNumber || player.contactNumber;
+      player.contactNumber = contactNumber;
       player.playerStatus = playerStatus || player.playerStatus;
       return player.save();
     })

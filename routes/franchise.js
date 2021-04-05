@@ -41,21 +41,13 @@ router.post(
   franchiseController.signup
 );
 
-// router.post("/login", playerController.login);
-
-router.post(
-  "/",
+router.put(
+  "/:franchiseId",
   [
     body("email")
+      .trim()
       .isEmail()
       .withMessage("Please enter a valid email.")
-      .custom((value, { req }) => {
-        return Franchise.findOne({ email: value }).then((userDoc) => {
-          if (userDoc) {
-            return Promise.reject("E-Mail address already exists!");
-          }
-        });
-      })
       .normalizeEmail(),
     body("macAddress")
       .trim()
@@ -74,10 +66,8 @@ router.post(
       .isEmpty()
       .withMessage("Please enter your Device serial number"),
   ],
-
-  franchiseController.createProfile
+  franchiseController.updateProfile
 );
-router.put("/:franchiseId", franchiseController.updateProfile);
 router.get("/", franchiseController.getProfiles);
 
 module.exports = router;

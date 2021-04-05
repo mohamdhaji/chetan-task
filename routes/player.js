@@ -5,9 +5,7 @@ const playerController = require("../controllers/player");
 
 const router = express.Router();
 
-
 router.post("/login", playerController.login);
-
 
 router.post(
   "/signup",
@@ -38,19 +36,13 @@ router.post(
   playerController.signup
 );
 
-router.post(
-  "/",
+router.put(
+  "/:playerId",
   [
     body("email")
+      .trim()
       .isEmail()
       .withMessage("Please enter a valid email.")
-      .custom((value, { req }) => {
-        return Player.findOne({ email: value }).then((userDoc) => {
-          if (userDoc) {
-            return Promise.reject("E-Mail address already exists!");
-          }
-        });
-      })
       .normalizeEmail(),
     body("dateOfBirth")
       .trim()
@@ -64,10 +56,9 @@ router.post(
       .isEmpty()
       .withMessage("Please enter your contact number"),
   ],
-
-  playerController.createProfile
+  playerController.updateProfile
 );
-router.put("/:playerId", playerController.updateProfile);
+
 router.get("/", playerController.getProfiles);
 
 module.exports = router;

@@ -21,8 +21,7 @@ const playerSchema = new Schema({
     type: Number,
     required: true,
   },
-  otp: String,
-
+ 
   playerStatus: {
     type: Object,
   },

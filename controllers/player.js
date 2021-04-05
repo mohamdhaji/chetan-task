@@ -33,7 +33,7 @@ exports.signup = (req, res, next) => {
     dateOfBirth: dateOfBirth,
     location: location,
     contactNumber: contactNumber,
-    playerStatus:playerStatus
+    playerStatus: playerStatus,
   });
   return player
     .save()
@@ -60,55 +60,16 @@ exports.login = (req, res, next) => {
       }
       var options = {
         method: "GET",
-        url: process.env.OTPSMS_URL,
+        url: `http://otpsms.vision360solutions.in/api/sendhttp.php?authkey=${process.env.OTPSMS_KEY}&mobiles=${contactNumber}&message=your otp is 1234&sender=Vision&route=4&country=91`,
         headers: {
           Cookie: process.env.OTPSMS_COOKIE,
         },
       };
-      request(options, async function (error, response) {
+      request(options, (error, response) => {
         if (error) throw new Error(error);
-        player.otp = response.body.slice(0, 4);
-        await player.save();
-        res
-          .status(200)
-          .json({ otp: response.body.slice(0, 4), player: player });
+
+        res.status(200).json({ otp: response.body.slice(-5), player: player });
       });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
-exports.createProfile = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const error = new Error("Validation failed.");
-    error.statusCode = 422;
-    error.data = errors.array();
-    throw error;
-  }
-  const name = req.body.name;
-  const email = req.body.email;
-  const dateOfBirth = req.body.dateOfBirth;
-  const location = req.body.location;
-  const contactNumber = req.body.contactNumber;
-  const playerStatus = req.body.playerStatus;
-  const player = new Player({
-    name: name,
-    email: email,
-    dateOfBirth: dateOfBirth,
-    location: location,
-    contactNumber: contactNumber,
-    playerStatus: playerStatus,
-  });
-  return player
-    .save()
-    .then((result) => {
-      res
-        .status(201)
-        .json({ message: "Player created!", playerId: result._id });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -119,6 +80,14 @@ exports.createProfile = (req, res, next) => {
 };
 
 exports.updateProfile = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new Error("Validation failed.");
+    error.statusCode = 422;
+    error.data = errors.array();
+    throw error;
+  }
+
   const playerId = req.params.playerId;
 
   const name = req.body.name;

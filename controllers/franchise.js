@@ -52,16 +52,18 @@ exports.login = (req, res, next) => {
       }
       var options = {
         method: "GET",
-        url: process.env.OTPSMS_URL,
+        url: `http://otpsms.vision360solutions.in/api/sendhttp.php?authkey=${process.env.OTPSMS_KEY}&mobiles=${contactNumber}&message=your otp is 1234&sender=Vision&route=4&country=91`,
         headers: {
           Cookie: process.env.OTPSMS_COOKIE,
         },
       };
       request(options, async function (error, response) {
         if (error) throw new Error(error);
-        franchise.Active=true;
+        franchise.Active = true;
         await franchise.save();
-        res.status(200).json({ otp: response.body.slice(0, 4),franchise:franchise });
+        res
+          .status(200)
+          .json({ otp: response.body.slice(-5), franchise: franchise });
       });
     })
     .catch((err) => {
@@ -72,7 +74,7 @@ exports.login = (req, res, next) => {
     });
 };
 
-exports.createProfile = (req, res, next) => {
+exports.updateProfile = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed.");
@@ -80,38 +82,6 @@ exports.createProfile = (req, res, next) => {
     error.data = errors.array();
     throw error;
   }
-  const name = req.body.name;
-  const email = req.body.email;
-  const macAddress = req.body.macAddress;
-  const location = req.body.location;
-  const contactNumber = req.body.contactNumber;
-  const deviceSerialNumber = req.body.deviceSerialNumber;
-
-  const franchise = new Franchise({
-    name: name,
-    email: email,
-    macAddress: macAddress,
-    location: location,
-    contactNumber: contactNumber,
-    deviceSerialNumber: deviceSerialNumber,
-
-  });
-  return franchise
-    .save()
-    .then((result) => {
-      res
-        .status(201)
-        .json({ message: "Franchise created!", franchiseId: result._id });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
-
-exports.updateProfile = (req, res, next) => {
   const franchiseId = req.params.franchiseId;
 
   const name = req.body.name;
@@ -134,7 +104,7 @@ exports.updateProfile = (req, res, next) => {
       franchise.Active = active || franchise.active;
       franchise.email = email || franchise.email;
       franchise.deviceSerialNumber =
-      deviceSerialNumber || franchise.deviceSerialNumber;
+        deviceSerialNumber || franchise.deviceSerialNumber;
       franchise.location = location || franchise.location;
       franchise.contactNumber = contactNumber || franchise.contactNumber;
       franchise.macAddress = macAddress || franchise.macAddress;

@@ -36,9 +36,13 @@ app.use((error, req, res, next) => {
 });
 
 
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 mongoose
   .connect(
-    process.env.MONGODB_URI
+    process.env.MONGODB_URI,{ useNewUrlParser: true ,useUnifiedTopology: true}
   )
   .then((result) => {
     app.listen(8080);

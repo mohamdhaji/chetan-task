@@ -51,32 +51,12 @@ router.post(
 router.put(
   "/:franchiseId",
   [
-    body("email")
-      .trim()
-      .isEmail()
-      .withMessage("Please enter a valid email.")
-      .normalizeEmail(),
-    body("macAddress")
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage("Please enter your MAC Address"),
     body("name").trim().not().isEmpty().withMessage("Please enter your name"),
-    body("contactNumber")
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage("Please enter your contact number"),
     body("active")
       .trim()
       .not()
       .isEmpty()
       .withMessage("Please enter active status"),
-    body("deviceSerialNumber")
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage("Please enter your Device serial number"),
   ],
   franchiseController.updateProfile
 );

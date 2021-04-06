@@ -97,7 +97,7 @@ exports.updateProfile = (req, res, next) => {
   const dateOfBirth = req.body.dateOfBirth;
   const location = req.body.location;
   const contactNumber = req.body.contactNumber;
-  const playerStatus = req.body.playerStatus;
+  let playerStatus = req.body.playerStatus;
 
   Player.findById(playerId)
     .then((player) => {
@@ -106,13 +106,13 @@ exports.updateProfile = (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
-
-      player.name = name ;
-      player.active = active
-      player.email = email ;
-      player.dateOfBirth = dateOfBirth;
+      playerStatus = { ...player.playerStatus, ...playerStatus };
+      player.name = name;
+      player.active = active;
+      player.email = email || player.email;
+      player.dateOfBirth = dateOfBirth || player.dateOfBirth;
       player.location = location || player.location;
-      player.contactNumber = contactNumber;
+      player.contactNumber = contactNumber || player.contactNumber;
       player.playerStatus = playerStatus || player.playerStatus;
       return player.save();
     })

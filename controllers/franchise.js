@@ -102,11 +102,11 @@ exports.updateProfile = (req, res, next) => {
 
       franchise.name = name;
       franchise.active = active;
-      franchise.email = email;
-      franchise.deviceSerialNumber = deviceSerialNumber;
+      franchise.email = email || franchise.email;
+      franchise.deviceSerialNumber = deviceSerialNumber || franchise.deviceSerialNumber;
       franchise.location = location || franchise.location;
-      franchise.contactNumber = contactNumber 
-      franchise.macAddress = macAddress 
+      franchise.contactNumber = contactNumber ||  franchise.contactNumber
+      franchise.macAddress = macAddress || franchise.macAddress
 
       return franchise.save();
     })

@@ -9,6 +9,8 @@ const franchiseSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: 1,
+
   },
   location: {
     type: String,

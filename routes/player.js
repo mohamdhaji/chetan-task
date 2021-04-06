@@ -46,23 +46,8 @@ router.post(
 router.put(
   "/:playerId",
   [
-    body("email")
-      .trim()
-      .isEmail()
-      .withMessage("Please enter a valid email.")
-      .normalizeEmail(),
-    body("dateOfBirth")
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage("Please enter your Date of birth"),
     body("name").trim().not().isEmpty().withMessage("Please enter your name"),
-    body("contactNumber")
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage("Please enter your contact number"),
-      body("active")
+    body("active")
       .trim()
       .not()
       .isEmpty()
